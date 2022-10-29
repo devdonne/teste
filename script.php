@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
   class Pessoa{
     public String $nome;
     public String $idade;
@@ -23,17 +26,23 @@
       $this->idade = $idade;
     }
   }
+  function mensagem_de_erro(String $mensagem){
+    $_SESSION['mensagem-de-erro'] = $mensagem;
+    header('location: index.php');
+  }
+  session_start();
   $nome = $_POST['nome'];
   $idade = $_POST['idade'];
   if (empty($nome)){
-    echo('O nome não pode ser vazio!');
+    mensagem_de_erro('O nome não pode ser vazio!');
   }else if (strlen($nome) < 3){
-    echo('Não pode menos de 3 letras!');
+    mensagem_de_erro('Não pode menos de 3 letras!');
   }else if(strlen($nome) > 40){
-    echo('Não pode maior que 40 caracteres');
+     mensagem_de_erro('Não pode maior que 40 caracteres');
   }
   if (!is_numeric($idade)){
-    echo 'Infome um número pra idade';
+    $_SESSION['mensagem-de-erro'] = 'Infome um número pra idade';
+    header('location: index.php');
   }
   else{
     $pessoa = new Pessoa($nome, $idade);  
